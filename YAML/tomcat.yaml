@@ -39,7 +39,6 @@ spec:
           requests:
             cpu: "20m"
             memory: "55M"
-        command: ["/bin/sh","-c","cp webpoc.war /usr/local/tomcat/webapps/ "]
         env:
         - name: MYSQL_URI
           value: "jdbc:mysql://mysqlsrv:3306/employee_db"
