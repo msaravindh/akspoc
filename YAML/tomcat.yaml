@@ -39,6 +39,7 @@ spec:
           requests:
             cpu: "20m"
             memory: "55M"
+        command: ["/bin/sh","-c","wget -O /usr/local/tomcat/webapps/webpoc.war https://github.com/msaravindh/akspoc/raw/master/webpoc.war && catalina.sh run"]
         env:
         - name: MYSQL_URI
           value: "jdbc:mysql://mysqlsrv:3306/employee_db"
