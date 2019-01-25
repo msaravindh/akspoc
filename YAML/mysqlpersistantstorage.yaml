@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqlsrv
+  labels:
+    name: mysqlsrv
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 3306
+    targetPort: 3306
+  selector:
+    name: mysql-db
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: mysql-pv
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: managed-premium
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql-db-deploy
+  labels:
+    name: mysql-db
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: mysql-db
+    spec:
+      containers:
+      - image: mysql:latest
+        name: mysql-cntr
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "55M"
+        command: ["sh","-c","apt-get update && apt-get install wget -y && wget -O /tmp/employee_db.sql https://raw.githubusercontent.com/msaravindh/akspoc/master/YAML/employee_db.sql && wget -O SetupMySQLDB.sh https://raw.githubusercontent.com/msaravindh/akspoc/master/YAML/SetupMySQLDB.sh && chmod 755 SetupMySQLDB.sh && ((sleep 40 && ./SetupMySQLDB.sh) &) && ./entrypoint.sh mysqld "]
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        ports:
+        - containerPort: 3306
+          name: mysql-db
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          subPath: data
+          name: volume
+      volumes:
+      - name: volume
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
