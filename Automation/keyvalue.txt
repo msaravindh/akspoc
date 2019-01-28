@@ -1,0 +1,9 @@
+application=test
+environment=devtest
+owner=xxxx
+Business=test
+Region=eastus2
+Subscription=<subscription id>
+Resourcegroup=<aks resource group>
+Cluster=<aks cluster name>
+
