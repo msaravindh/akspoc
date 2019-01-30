@@ -37,7 +37,7 @@ spec:
           requests:
             cpu: "20m"
             memory: "55M"
-        command: ["sh","-c","apt-get update && apt-get install wget -y && wget -O /tmp/employee_db.sql https://raw.githubusercontent.com/msaravindh/akspoc/master/YAML/employee_db.sql && wget -O SetupMySQLDB.sh https://raw.githubusercontent.com/msaravindh/akspoc/master/YAML/SetupMySQLDB.sh && chmod 755 SetupMySQLDB.sh && ((sleep 40 && ./SetupMySQLDB.sh) &) && ./entrypoint.sh mysqld"]
+        command: ["sh","-c","apt-get update && apt-get install wget -y && wget -O /tmp/employee_db.sql https://raw.githubusercontent.com/msaravindh/akspoc/master/Application%201/YAML/employee_db.sql && wget -O SetupMySQLDB.sh https://raw.githubusercontent.com/msaravindh/akspoc/master/Application%201/YAML/SetupMySQLDB.sh && chmod 755 SetupMySQLDB.sh && ((sleep 40 && ./SetupMySQLDB.sh) &) && ./entrypoint.sh mysqld"]
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
