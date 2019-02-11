@@ -25,10 +25,13 @@ p.load (fis);
 String dname= (String) p.get ("Dname"); 
 //String url= (String) p.get ("Url"); 
 String url = System.getenv("MYSQL_URI");
-String username= (String) p.get ("Uname"); 
+//String username= (String) p.get ("Uname");
+String username = System.getenv("MYSQL_USER");
 String password= (String) p.get ("Password"); 
 Class.forName(dname); 
 
+//String Url ="jdbc:mysql://osstestdbmysql.mysql.database.azure.com:3306/employee_db?serverTimezone=UTC"; 
+//java.sql.Connection con = DriverManager.getConnection(Url, "vmadmin@osstestdbmysql", "Microsoft@1");
 java.sql.Connection con = DriverManager.getConnection(url,username,password);
 Statement st = con.createStatement();
 ResultSet rs;
