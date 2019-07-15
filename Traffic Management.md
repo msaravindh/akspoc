@@ -114,7 +114,7 @@ In this task, you will send 50% of traffic to reviews:v1 and 50% to reviews:v3. 
 
 ```
 
-$ kubectl apply -f [samples/bookinfo/networking/virtual-service-all-v1.yaml](https://raw.githubusercontent.com/istio/istio/release-1.2/samples/bookinfo/networking/virtual-service-all-v1.yaml)
+$ kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
 
 ```
 
