@@ -71,7 +71,7 @@ Remember, reviews:v2 is the version that includes the star ratings feature.
 
 ```
 
-$ kubectl apply -f [samples/bookinfo/networking/virtual-service-reviews-test-v2.yaml](https://raw.githubusercontent.com/istio/istio/release-1.2/samples/bookinfo/networking/virtual-service-reviews-test-v2.yaml)
+$ kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-test-v2.yaml
 
 ```
 
