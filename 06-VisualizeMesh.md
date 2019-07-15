@@ -90,9 +90,9 @@ $ oc patch clusterrole kiali -p '[{"op":"add", "path":"/rules/-", "value":{"apiG
     $ kubectl -n istio-system get svc kiali
     ```
 
-1.  To determine the Bookinfo URL, follow the instructions to determine the [Bookinfo ingress `GATEWAY_URL`](/docs/examples/bookinfo/#determining-the-ingress-ip-and-port).
+2.  To determine the Bookinfo URL, follow the instructions to determine the [Bookinfo ingress `GATEWAY_URL`](/docs/examples/bookinfo/#determining-the-ingress-ip-and-port).
 
-1.  To send traffic to the mesh, you have three options
+3.  To send traffic to the mesh, you have three options
 
     *   Visit `http://$GATEWAY_URL/productpage` in your web browser
 
@@ -108,32 +108,32 @@ $ oc patch clusterrole kiali -p '[{"op":"add", "path":"/rules/-", "value":{"apiG
         $ watch -n 1 curl -o /dev/null -s -w %{http_code} $GATEWAY_URL/productpage
         ```
 
-1.  To open the Kiali UI, execute the following command in your Kubernetes environment:
+4.  To open the Kiali UI, execute the following command in your Kubernetes environment:
 
     ```bash
     $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=kiali -o jsonpath='{.items[0].metadata.name}') 20001:20001
     ```
 
-1.  Visit <http://localhost:20001/kiali/console> in your web browser.
+5.  Visit <http://localhost:20001/kiali/console> in your web browser.
 
-1.  To log into the Kiali UI, go to the Kiali login screen and enter the username and passphrase stored in the Kiali secret.
+6.  To log into the Kiali UI, go to the Kiali login screen and enter the username and passphrase stored in the Kiali secret.
 
-1.  View the overview of your mesh in the **Overview** page that appears immediately after you log in.
+7.  View the overview of your mesh in the **Overview** page that appears immediately after you log in.
     The **Overview** page displays all the namespaces that have services in your mesh.
     The following screenshot shows a similar page:
 
-    {{< image width="75%" link="./kiali-overview.png" caption="Example Overview" >}}
+    ![](https://istio.io/docs/tasks/telemetry/kiali/kiali-overview.png)
 
-1.  To view a namespace graph, click on the `bookinfo` graph icon in the Bookinfo namespace card. The graph icon is in the lower left of
+8.  To view a namespace graph, click on the `bookinfo` graph icon in the Bookinfo namespace card. The graph icon is in the lower left of
     the namespace card and looks like a connected group of circles.
     The page looks similar to:
 
-    {{< image width="75%" link="./kiali-graph.png" caption="Example Graph" >}}
+    ![](https://istio.io/docs/tasks/telemetry/kiali/kiali-graph.png)
 
-1.  To view a summary of metrics, select any node or edge in the graph to display
+9.  To view a summary of metrics, select any node or edge in the graph to display
     its metric details in the summary details panel on the right.
 
-1.  To view your service mesh using different graph types, select a graph type
+10.  To view your service mesh using different graph types, select a graph type
     from the **Graph Type** drop down menu. There are several graph types
     to choose from: **App**, **Versioned App**, **Workload**, **Service**.
 
@@ -141,11 +141,40 @@ $ oc patch clusterrole kiali -p '[{"op":"add", "path":"/rules/-", "value":{"apiG
         The following example shows a single **reviews** node representing the three versions
         of the reviews app.
 
-        {{< image width="75%" link="./kiali-app.png" caption="Example App Graph" >}}
+        ![](https://istio.io/docs/tasks/telemetry/kiali/kiali-app.png)
 
     *   The **Versioned App** graph type shows a node for each version of an app,
         but all versions of a particular app are grouped together. The following example
         shows the **reviews** group box that contains the three nodes that represents the
         three versions of the reviews app.
 
-        {{< image width="75%" link="./kiali-versioned
+        ![](https://istio.io/docs/tasks/telemetry/kiali/kiali-versionedapp.png)
+    *   The Service graph type shows a node for each service in your mesh but excludes all apps         and workloads from the graph.
+    
+        ![](https://istio.io/docs/tasks/telemetry/kiali/kiali-service-graph.png)
+
+                        Example Service Graph
+11. To examine the details about the Istio configuration, click on the Applications, Workloads, and Services menu icons on the left menu bar. The following screenshot shows the Bookinfo applications information:
+
+
+        ![](https://istio.io/docs/tasks/telemetry/kiali/kiali-services.png)
+                              Example Details
+
+
+
+
+
+## About the Kiali Public API
+
+To generate JSON files representing the graphs and other metrics, health, and configuration information, you can access the Kiali Public API. For example, point your browser to $KIALI_URL/api/namespaces/graph?namespaces=bookinfo&graphType=app to get the JSON representation of your graph using the app graph type.
+The Kiali Public API is built on top of Prometheus queries and depends on the standard Istio metric configuration. It also makes Kubernetes API calls to obtain additional details about your services. For the best experience using Kiali, use the metadata labels app and version on your application components. As a template, the Bookinfo sample application follows this convention.
+
+## Cleanup
+
+If you are not planning any follow-up tasks, remove the Bookinfo sample application and Kiali from your cluster.
+1. To remove the Bookinfo application, refer to the Bookinfo cleanup instructions.
+2. To remove Kiali from a Kubernetes environment, remove all components with the app=kiali label:
+```
+kubectl delete all,secrets,sa,configmaps,deployments,ingresses,clusterroles,clusterrolebindings,virtualservices,destinationrules,customresourcedefinitions --selector=app=kiali -n istio-system
+```
+        
